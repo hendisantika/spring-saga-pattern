@@ -79,4 +79,16 @@ public class BaseDAO {
             execute(sql);
         }
     }
+
+    private void createOrderDetailsTable() {
+        if (!tableExists("orders_details")) {
+            String sql = "CREATE TABLE orders_details (\n"
+                    + "	orderId text PRIMARY KEY,\n"
+                    + "	items text NOT NULL,\n"
+                    + "	notes text\n"
+                    + ");";
+
+            execute(sql);
+        }
+    }
 }
