@@ -1,10 +1,12 @@
 package id.my.hendisantika.sagapattern.dao;
 
+import id.my.hendisantika.sagapattern.dto.Driver;
 import id.my.hendisantika.sagapattern.dto.Shipment;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -66,6 +68,23 @@ public class ShipmentDAO extends BaseDAO {
             pstmt.setString(1, Shipment.Status.CONFIRMED.name());
             pstmt.setString(2, orderId);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    public void readDriver(int driverId, Driver driver) {
+        String sql = "SELECT name, contact FROM drivers WHERE id = ?";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, driverId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                driver.setId(driverId);
+                driver.setName(rs.getString("name"));
+                driver.setContact(rs.getString("contact"));
+            }
+
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
