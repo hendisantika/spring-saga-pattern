@@ -72,4 +72,10 @@ public class OrderService {
         ORDERS_DAO.readOrder(orderId, order);
         return order;
     }
+
+    public static void cancelOrder(Order order) {
+        order.setStatus(Order.Status.CANCELLED);
+        log.info("Cancelling order {}", order.getOrderId());
+        ORDERS_DAO.updateOrder(order);
+    }
 }
