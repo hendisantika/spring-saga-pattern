@@ -44,4 +44,16 @@ public class ShipmentDAO extends BaseDAO {
         }
         return true;
     }
+
+    public void cancelShipment(String orderId) {
+        String sql = "UPDATE shipments SET status=? WHERE orderid=?;";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, Shipment.Status.CANCELED.name());
+            pstmt.setString(2, orderId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
