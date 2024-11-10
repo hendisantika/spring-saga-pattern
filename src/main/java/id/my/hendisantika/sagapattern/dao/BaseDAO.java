@@ -186,4 +186,21 @@ public class BaseDAO {
             execute(query);
         }
     }
+
+    private void seedRestaurants() {
+        String[] add = {
+                "5331 Redford Court, Montgomery AL 36116",
+                "43 West 4th Street, New York NY 10024",
+                "1693 Alice Court, Annapolis MD 21401"
+        };
+        String[] queries = {
+                "INSERT INTO restaurants(name, address, contact) VALUES('Mikes','+12121231345','" + add[0] + "');",
+                "INSERT INTO restaurants(name, address, contact) VALUES('Tamarind','+12412311147','" + add[1] + "');",
+                "INSERT INTO restaurants(name, address, contact) VALUES('Thai Place','+14790981941','" + add[2] + "');",
+        };
+
+        for (String query : queries) {
+            execute(query);
+        }
+    }
 }
