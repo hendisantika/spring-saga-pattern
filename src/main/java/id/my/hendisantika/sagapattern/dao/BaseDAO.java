@@ -1,5 +1,9 @@
 package id.my.hendisantika.sagapattern.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : saga-pattern
@@ -15,5 +19,15 @@ public class BaseDAO {
 
     public BaseDAO(String url) {
         this.url = url;
+    }
+
+    protected Connection connect() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(this.url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
     }
 }
