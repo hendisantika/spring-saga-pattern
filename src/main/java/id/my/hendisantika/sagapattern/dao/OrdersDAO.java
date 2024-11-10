@@ -1,8 +1,12 @@
 package id.my.hendisantika.sagapattern.dao;
 
+import id.my.hendisantika.sagapattern.dto.Order;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -62,5 +66,19 @@ public class OrdersDAO extends BaseDAO {
         }
 
         return "";
+    }
+
+    public void updateOrder(Order order) {
+        String sql = "UPDATE orders SET restaurantid=?,deliveryaddress=?,status=? WHERE orderid=?";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, order.getRestaurantId());
+            pstmt.setString(2, order.getDeliveryAddress());
+            pstmt.setString(3, order.getStatus().name());
+            pstmt.setString(4, order.getOrderId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
