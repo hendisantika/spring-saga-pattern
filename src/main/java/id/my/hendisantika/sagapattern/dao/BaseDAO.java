@@ -203,4 +203,17 @@ public class BaseDAO {
             execute(query);
         }
     }
+
+    private void seedDrivers() {
+        String[] queries = {
+                "INSERT INTO drivers(name,contact) VALUES('Wayne Stevens','+12520711467');",
+                "INSERT INTO drivers(name,contact) VALUES('Jim Willis','+16466281981');",
+                "INSERT INTO drivers(name,contact) VALUES('Steven Carroll','+12612590430');",
+                "INSERT INTO drivers(name,contact) VALUES('Tom Cruise','+18659581430');"
+        };
+
+        for (String query : queries) {
+            execute(query);
+        }
+    }
 }
