@@ -3,6 +3,7 @@ package id.my.hendisantika.sagapattern.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,5 +30,15 @@ public class BaseDAO {
             System.out.println(e.getMessage());
         }
         return conn;
+    }
+
+    protected Boolean execute(String sql) {
+        try (Connection conn = DriverManager.getConnection(this.url); Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 }
