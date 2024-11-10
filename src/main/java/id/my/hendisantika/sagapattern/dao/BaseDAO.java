@@ -156,4 +156,22 @@ public class BaseDAO {
             seedDrivers();
         }
     }
+
+    private void createShipmentTable() {
+        if (tableExists("shipments")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE shipments (\n"
+                + "	id integer PRIMARY KEY AUTOINCREMENT,\n"
+                + "	orderId text NOT NULL,\n"
+                + "	driverId number NOT NULL,\n"
+                + "	address text NOT NULL,\n"
+                + "	instructions text,\n"
+                + "	status text NOT NULL,\n"
+                + "	createdAt TIMESTAMP NOT NULL\n"
+                + ");";
+
+        execute(sql);
+    }
 }
