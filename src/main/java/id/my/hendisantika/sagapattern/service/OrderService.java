@@ -66,4 +66,10 @@ public class OrderService {
 
         return uuidAsString;
     }
+
+    public static Order getOrder(String orderId) {
+        Order order = new Order();
+        ORDERS_DAO.readOrder(orderId, order);
+        return order;
+    }
 }
