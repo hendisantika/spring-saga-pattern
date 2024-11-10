@@ -4,6 +4,7 @@ import id.my.hendisantika.sagapattern.dto.Payment;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -52,6 +53,25 @@ public class PaymentsDAO extends BaseDAO {
             pstmt.setString(1, payment.getStatus().name());
             pstmt.setString(2, payment.getPaymentId());
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void readPayment(String orderId, Payment payment) {
+        String sql = "SELECT paymentid, orderid, amount, method, createdat, status FROM payments WHERE orderid = ?";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, orderId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                payment.setPaymentId(rs.getString("paymentId"));
+                payment.setOrderId(rs.getString("orderId"));
+                payment.setAmount(rs.getDouble("amount"));
+                payment.setCreatedAt(rs.getLong("createdAt"));
+                payment.setStatus(Payment.Status.valueOf(rs.getString("status")));
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
