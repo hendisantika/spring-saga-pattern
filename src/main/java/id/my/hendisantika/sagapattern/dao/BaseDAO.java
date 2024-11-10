@@ -1,7 +1,9 @@
 package id.my.hendisantika.sagapattern.dao;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -215,5 +217,19 @@ public class BaseDAO {
         for (String query : queries) {
             execute(query);
         }
+    }
+
+    boolean tableExists(String tableName) {
+        try {
+            Connection conn = DriverManager.getConnection(this.url);
+            DatabaseMetaData meta = conn.getMetaData();
+            ResultSet resultSet = meta.getTables(null, null, tableName, new String[]{"TABLE"});
+            boolean exists = resultSet.next();
+            conn.close();
+            return exists;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 }
