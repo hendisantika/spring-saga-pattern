@@ -140,4 +140,20 @@ public class BaseDAO {
 
         execute(sql);
     }
+
+    private void createDriversTable() {
+        if (tableExists("drivers")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE drivers (\n"
+                + "	id integer PRIMARY KEY AUTOINCREMENT,\n"
+                + "	name text NOT NULL,\n"
+                + "	contact text\n"
+                + ");";
+
+        if (execute(sql)) {
+            seedDrivers();
+        }
+    }
 }
