@@ -63,4 +63,20 @@ public class BaseDAO {
                 System.out.println("Service name not recognized");
         }
     }
+
+    private void createOrdersTable() {
+        if (!tableExists("orders")) {
+
+            String sql = "CREATE TABLE orders (\n"
+                    + "	orderId text PRIMARY KEY,\n"
+                    + "	customerId integer NOT NULL,\n"
+                    + "	restaurantId integer NOT NULL,\n"
+                    + "	deliveryAddress text NOT NULL,\n"
+                    + "	createdAt TIMESTAMP NOT NULL,\n"
+                    + "	status text NOT NULL\n"
+                    + ");";
+
+            execute(sql);
+        }
+    }
 }
