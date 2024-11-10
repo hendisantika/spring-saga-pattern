@@ -108,4 +108,19 @@ public class BaseDAO {
             seedCustomers();
         }
     }
+
+    private void createRestaurantsTable() {
+        if (!tableExists("restaurants")) {
+            String sql = "CREATE TABLE restaurants (\n"
+                    + "	id integer PRIMARY KEY AUTOINCREMENT,\n"
+                    + "	name text NOT NULL,\n"
+                    + "	address text NOT NULL,\n"
+                    + "	contact text NOT NULL\n"
+                    + ");";
+
+            if (execute(sql)) {
+                seedRestaurants();
+            }
+        }
+    }
 }
