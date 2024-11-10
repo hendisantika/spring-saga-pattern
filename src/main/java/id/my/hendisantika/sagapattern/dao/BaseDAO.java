@@ -174,4 +174,16 @@ public class BaseDAO {
 
         execute(sql);
     }
+
+    private void seedCustomers() {
+        String[] queries = {
+                "INSERT INTO customers(email, name, contact) VALUES('John Smith','john.smith@example.com','+12126781345');",
+                "INSERT INTO customers(email, name, contact) VALUES('Mike Ross','mike.ross@example.com','+15466711147');",
+                "INSERT INTO customers(email, name, contact) VALUES('Martha Williams','martha.williams@example.com','+12790581941');"
+        };
+
+        for (String query : queries) {
+            execute(query);
+        }
+    }
 }
