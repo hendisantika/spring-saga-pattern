@@ -123,4 +123,21 @@ public class BaseDAO {
             }
         }
     }
+
+    private void createPaymentsTable() {
+        if (tableExists("payments")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE payments (\n"
+                + "	paymentId text PRIMARY KEY,\n"
+                + "	orderId text NOT NULL,\n"
+                + "	amount number NOT NULL,\n"
+                + "	method text,\n"
+                + "	status text,\n"
+                + "	createdAt TIMESTAMP NOT NULL\n"
+                + ");";
+
+        execute(sql);
+    }
 }
