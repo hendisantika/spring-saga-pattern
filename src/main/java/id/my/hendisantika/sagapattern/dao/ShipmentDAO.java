@@ -1,6 +1,7 @@
 package id.my.hendisantika.sagapattern.dao;
 
 import id.my.hendisantika.sagapattern.dto.Shipment;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,7 @@ import java.util.Date;
  * Time: 06.43
  * To change this template use File | Settings | File Templates.
  */
+@Slf4j
 public class ShipmentDAO extends BaseDAO {
 
     public ShipmentDAO(String url) {
@@ -39,7 +41,7 @@ public class ShipmentDAO extends BaseDAO {
             pstmt.setString(6, Shipment.Status.SCHEDULED.name());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return false;
         }
         return true;
@@ -53,7 +55,19 @@ public class ShipmentDAO extends BaseDAO {
             pstmt.setString(2, orderId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
+        }
+    }
+
+    public void confirmShipment(String orderId) {
+        String sql = "UPDATE shipments SET status=? WHERE orderid=?;";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, Shipment.Status.CONFIRMED.name());
+            pstmt.setString(2, orderId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
         }
     }
 }
