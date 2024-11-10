@@ -105,4 +105,42 @@ public class OrdersDAO extends BaseDAO {
             System.out.println(e.getMessage());
         }
     }
+
+    public int insertCustomer(Customer customer) {
+        int id = 0;
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM customers WHERE email = ?")) {
+            pstmt.setString(1, customer.getEmail());
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        if (id > 0) {
+            return id;
+        }
+
+        String sql = "INSERT INTO customers(email,name,contact) VALUES(?,?,?)";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, customer.getEmail());
+            pstmt.setString(2, customer.getName());
+            pstmt.setString(3, customer.getContact());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM customers WHERE email = ?")) {
+            pstmt.setString(1, customer.getEmail());
+            ResultSet rs = pstmt.executeQuery();
+            id = rs.getInt("id");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
 }
