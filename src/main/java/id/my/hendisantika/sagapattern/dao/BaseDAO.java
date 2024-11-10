@@ -91,4 +91,21 @@ public class BaseDAO {
             execute(sql);
         }
     }
+
+    private void createCustomerTable() {
+        if (tableExists("customers")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE customers (\n"
+                + "	id integer PRIMARY KEY AUTOINCREMENT,\n"
+                + "	email text NOT NULL,\n"
+                + "	name text NOT NULL,\n"
+                + "	contact text\n"
+                + ");";
+
+        if (execute(sql)) {
+            seedCustomers();
+        }
+    }
 }
