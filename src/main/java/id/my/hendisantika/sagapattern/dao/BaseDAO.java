@@ -41,4 +41,26 @@ public class BaseDAO {
         }
         return true;
     }
+
+    public void createTables(String service) {
+        switch (service) {
+            case "orders":
+                createOrdersTable();
+                createOrderDetailsTable();
+                createCustomerTable();
+                break;
+            case "inventory":
+                createRestaurantsTable();
+                break;
+            case "shipments":
+                createDriversTable();
+                createShipmentTable();
+                break;
+            case "payments":
+                createPaymentsTable();
+                break;
+            default:
+                System.out.println("Service name not recognized");
+        }
+    }
 }
