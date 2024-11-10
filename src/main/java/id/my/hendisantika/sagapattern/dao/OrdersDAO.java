@@ -1,9 +1,11 @@
 package id.my.hendisantika.sagapattern.dao;
 
+import id.my.hendisantika.sagapattern.dto.Customer;
 import id.my.hendisantika.sagapattern.dto.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -77,6 +79,28 @@ public class OrdersDAO extends BaseDAO {
             pstmt.setString(3, order.getStatus().name());
             pstmt.setString(4, order.getOrderId());
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void readOrder(String orderId, Order order) {
+        String sql = "SELECT orderid, customerid, restaurantid, deliveryaddress, createdat, status FROM orders WHERE orderid = ?";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, orderId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                order.setOrderId(rs.getString("orderId"));
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("customerId"));
+                order.setCustomer(customer);
+                order.setRestaurantId(rs.getInt("restaurantId"));
+                order.setDeliveryAddress(rs.getString("deliveryAddress"));
+                order.setCreatedAt(rs.getLong("createdAt"));
+                order.setStatus(Order.Status.valueOf(rs.getString("status")));
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
