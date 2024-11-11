@@ -1,5 +1,7 @@
 package id.my.hendisantika.sagapattern.worker;
 
+import com.netflix.conductor.common.metadata.tasks.TaskResult;
+import com.netflix.conductor.sdk.workflow.task.WorkerTask;
 import id.my.hendisantika.sagapattern.dto.CancelRequest;
 import id.my.hendisantika.sagapattern.dto.CheckInventoryRequest;
 import id.my.hendisantika.sagapattern.dto.DriverNotificationRequest;
