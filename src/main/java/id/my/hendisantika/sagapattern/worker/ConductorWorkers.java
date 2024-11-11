@@ -1,11 +1,15 @@
 package id.my.hendisantika.sagapattern.worker;
 
+import id.my.hendisantika.sagapattern.dto.CheckInventoryRequest;
+import id.my.hendisantika.sagapattern.dto.FoodItem;
 import id.my.hendisantika.sagapattern.dto.OrderRequest;
+import id.my.hendisantika.sagapattern.service.InventoryService;
 import id.my.hendisantika.sagapattern.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,4 +47,23 @@ public class ConductorWorkers {
         }
         return result;
     }
+
+    @WorkerTask(value = "check_inventory", threadCount = 2, pollingInterval = 300)
+    public TaskResult checkInventoryTask(CheckInventoryRequest checkInventoryRequest) {
+        int restaurantId = checkInventoryRequest.getRestaurantId();
+        ArrayList<FoodItem> items = checkInventoryRequest.getItems();
+        boolean availability = InventoryService.checkAvailability(restaurantId, items);
+
+        TaskResult result = new TaskResult();
+
+        if (availability) {
+            result.setStatus(TaskResult.Status.COMPLETED);
+        } else {
+            result.setReasonForIncompletion("Restaurant is closed");
+            result.setStatus(TaskResult.Status.FAILED_WITH_TERMINAL_ERROR);
+        }
+
+        return result;
+    }
+
 }
