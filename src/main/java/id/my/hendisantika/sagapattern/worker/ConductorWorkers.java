@@ -3,6 +3,7 @@ package id.my.hendisantika.sagapattern.worker;
 import id.my.hendisantika.sagapattern.dto.CheckInventoryRequest;
 import id.my.hendisantika.sagapattern.dto.DriverNotificationRequest;
 import id.my.hendisantika.sagapattern.dto.FoodItem;
+import id.my.hendisantika.sagapattern.dto.Order;
 import id.my.hendisantika.sagapattern.dto.OrderRequest;
 import id.my.hendisantika.sagapattern.dto.Payment;
 import id.my.hendisantika.sagapattern.dto.PaymentRequest;
@@ -113,4 +114,9 @@ public class ConductorWorkers {
         return result;
     }
 
+    @WorkerTask(value = "notify_customer", threadCount = 2, pollingInterval = 300)
+    public Map<String, Object> checkForCustomerNotifications(Order order) {
+        Map<String, Object> result = new HashMap<>();
+        return result;
+    }
 }
