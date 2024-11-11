@@ -134,4 +134,12 @@ public class ConductorWorkers {
         ShipmentService.cancelDelivery(cancelRequest.getOrderId());
         return result;
     }
+
+    @WorkerTask(value = "cancel_order", threadCount = 2, pollingInterval = 300)
+    public Map<String, Object> cancelOrderTask(CancelRequest cancelRequest) {
+        Map<String, Object> result = new HashMap<>();
+        Order order = OrderService.getOrder(cancelRequest.getOrderId());
+        OrderService.cancelOrder(order);
+        return result;
+    }
 }
