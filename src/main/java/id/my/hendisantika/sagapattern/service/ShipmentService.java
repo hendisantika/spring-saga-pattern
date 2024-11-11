@@ -6,6 +6,8 @@ import id.my.hendisantika.sagapattern.dto.Shipment;
 import id.my.hendisantika.sagapattern.dto.ShippingRequest;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Random;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : saga-pattern
@@ -55,5 +57,17 @@ public class ShipmentService {
 
     public static void cancelDelivery(String orderId) {
         shipmentDAO.cancelShipment(orderId);
+    }
+
+    private static int findDriver() {
+        Random random = new Random();
+        int driverId = 0;
+        int counter = 0;
+        while (counter < 10) {
+            driverId = random.nextInt(4);
+            if (driverId != 0) break;
+            counter += 1;
+        }
+        return driverId;
     }
 }
