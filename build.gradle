@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'io.orkes.conductor:orkes-conductor-client:2.1.0'
+    implementation 'io.orkes.conductor:orkes-conductor-client:4.0.1'
 
     implementation 'org.xerial:sqlite-jdbc:3.47.0.0'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
