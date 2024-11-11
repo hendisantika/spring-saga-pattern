@@ -3,8 +3,11 @@ package id.my.hendisantika.sagapattern.worker;
 import id.my.hendisantika.sagapattern.dto.CheckInventoryRequest;
 import id.my.hendisantika.sagapattern.dto.FoodItem;
 import id.my.hendisantika.sagapattern.dto.OrderRequest;
+import id.my.hendisantika.sagapattern.dto.Payment;
+import id.my.hendisantika.sagapattern.dto.PaymentRequest;
 import id.my.hendisantika.sagapattern.service.InventoryService;
 import id.my.hendisantika.sagapattern.service.OrderService;
+import id.my.hendisantika.sagapattern.service.PaymentService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -62,6 +65,28 @@ public class ConductorWorkers {
             result.setReasonForIncompletion("Restaurant is closed");
             result.setStatus(TaskResult.Status.FAILED_WITH_TERMINAL_ERROR);
         }
+
+        return result;
+    }
+
+    @WorkerTask(value = "make_payment", threadCount = 2, pollingInterval = 300)
+    public TaskResult makePaymentTask(PaymentRequest paymentRequest) {
+        TaskResult result = new TaskResult();
+
+        Payment payment = PaymentService.createPayment(paymentRequest);
+        Map<String, Object> output = new HashMap<>();
+        output.put("orderId", payment.getOrderId());
+        output.put("paymentId", payment.getPaymentId());
+        output.put("paymentStatus", payment.getStatus().name());
+
+        if (payment.getStatus() == Payment.Status.SUCCESSFUL) {
+            result.setStatus(TaskResult.Status.COMPLETED);
+        } else {
+            output.put("error", payment.getErrorMsg());
+            result.setStatus(TaskResult.Status.FAILED_WITH_TERMINAL_ERROR);
+        }
+
+        result.setOutputData(output);
 
         return result;
     }
