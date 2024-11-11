@@ -5,9 +5,11 @@ import id.my.hendisantika.sagapattern.dto.FoodItem;
 import id.my.hendisantika.sagapattern.dto.OrderRequest;
 import id.my.hendisantika.sagapattern.dto.Payment;
 import id.my.hendisantika.sagapattern.dto.PaymentRequest;
+import id.my.hendisantika.sagapattern.dto.ShippingRequest;
 import id.my.hendisantika.sagapattern.service.InventoryService;
 import id.my.hendisantika.sagapattern.service.OrderService;
 import id.my.hendisantika.sagapattern.service.PaymentService;
+import id.my.hendisantika.sagapattern.service.ShipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -91,4 +93,16 @@ public class ConductorWorkers {
         return result;
     }
 
+    @WorkerTask(value = "ship_food", threadCount = 2, pollingInterval = 300)
+    public TaskResult shipFoodTask(ShippingRequest shippingRequest) {
+        TaskResult result = new TaskResult();
+        Map<String, Object> output = new HashMap<>();
+        int driverId = ShipmentService.createShipment(shippingRequest);
+        if (driverId != 0) {
+            result.setStatus(TaskResult.Status.COMPLETED);
+        } else {
+            result.setStatus(TaskResult.Status.FAILED);
+        }
+        return result;
+    }
 }
