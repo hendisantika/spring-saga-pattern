@@ -92,10 +92,10 @@ The application starts on `http://localhost:8080` and uses a local SQLite databa
 
 ## Trigger the Food Delivery Flow
 
-Create an order by calling the `triggerFoodDeliveryFlow` API:
+Create an order by calling the `POST /saga/triggerFoodDeliveryFlow` API:
 
 ```shell
-curl --location 'http://localhost:8080/triggerFoodDeliveryFlow' \
+curl --location 'http://localhost:8080/saga/triggerFoodDeliveryFlow' \
  --header 'Content-Type: application/json' \
  --data '{
      "customerEmail": "tester.qa@example.com",
