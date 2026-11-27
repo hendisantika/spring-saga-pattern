@@ -22,9 +22,10 @@ updates:
       include: "scope"
     rebase-strategy: "auto"
     ignore:
-      # 12.x is listed in maven-metadata.xml but its POM/JAR are not published (404) on Maven Central
+      # 12.x is listed in maven-metadata.xml but its POM/JAR are not published (404) on Maven Central,
+      # so skip major bumps of the Conductor client (upgrade it manually after verifying the artifact exists)
       - dependency-name: "io.orkes.conductor:orkes-conductor-client"
-        versions: [ "12.x" ]
+        update-types: [ "version-update:semver-major" ]
     groups:
       spring-boot:
         patterns:
